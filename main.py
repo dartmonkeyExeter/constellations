@@ -3,7 +3,6 @@
 import pygame
 import math
 import random
-import colorsys
 
 pygame.init()
 win = pygame.display.set_mode((500, 500), pygame.RESIZABLE)
@@ -12,11 +11,11 @@ pygame.display.set_caption("constellation maker")
 running = True
 
 class Planet_class:
-    def __init__(self, x, y, radius, color):
+    def __init__(self, x, y, radius, colour):
         self.x = x
         self.y = y
         self.radius = radius
-        self.color = color
+        self.colour = colour
 
 planets = []
 colour = (255,255,255)
@@ -45,7 +44,7 @@ while running:
             planets = []
     win.fill((0,0,0))
     for plan in planets:
-        pygame.draw.circle(win, plan.color, (plan.x, plan.y), plan.radius)
+        pygame.draw.circle(win, plan.colour, (plan.x, plan.y), plan.radius)
     
     for plan in planets:
         distances = []
@@ -61,12 +60,11 @@ while running:
         second_lowest = min([i for i in distances if i != lowest], default=0)
         for i in range(len(distances)):
             if distances[i] == lowest:
-                pygame.draw.line(win, plan.color, (plan.x, plan.y), (planet_connections[i].x, planet_connections[i].y))
+                pygame.draw.line(win, plan.colour, (plan.x, plan.y), (planet_connections[i].x, planet_connections[i].y))
             if distances[i] == second_lowest and distances[i] < (lowest + 50):
-                pygame.draw.line(win, plan.color, (plan.x, plan.y), (planet_connections[i].x, planet_connections[i].y))
+                pygame.draw.line(win, plan.colour, (plan.x, plan.y), (planet_connections[i].x, planet_connections[i].y))
 
     pygame.draw.rect(win, colour, (5, 5, 25, 25))
 
 
     pygame.display.update()
-
