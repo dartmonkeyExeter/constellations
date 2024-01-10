@@ -5,8 +5,8 @@ import math
 import random
 
 pygame.init()
-win = pygame.display.set_mode((500, 500))
-pygame.display.set_caption("")
+win = pygame.display.set_mode((500, 500), pygame.RESIZABLE)
+pygame.display.set_caption("constellation maker")
 
 running = True
 
@@ -16,8 +16,6 @@ class Planet_class:
         self.y = y
         self.radius = radius
         self.color = color
-        self.connections = 0
-        self.lines_to_draw = []
 
 planets = []
 
@@ -41,16 +39,24 @@ while running:
         pygame.draw.circle(win, plan.color, (plan.x, plan.y), plan.radius)
     
     for plan in planets:
+        distances = []
+        planet_connections = []
         for plan2 in planets:
-                if plan2 != plan and plan2.connections < 3 and plan.connections < 3:
-                    plan.lines_to_draw.append(((255,255,255), (plan.x, plan.y), (plan2.x, plan2.y), 1))
-                    plan2.lines_to_draw.append(((255,255,255), (plan.x, plan.y), (plan2.x, plan2.y), 1))
-                    plan.connections += 1
-                    plan2.connections += 1
+            if plan2 != plan:
+                x = plan2.x - plan.x
+                y = plan2.y - plan.y
+                distance = math.sqrt(x**2 + y**2)
+                distances.append(distance)
+                planet_connections.append(plan2)
+        lowest = min(distances, default=0)
+        second_lowest = min([i for i in distances if i != lowest], default=0)
+        for i in range(len(distances)):
+            if distances[i] == lowest:
+                pygame.draw.line(win, (255,255,255), (plan.x, plan.y), (planet_connections[i].x, planet_connections[i].y))
+            if distances[i] == second_lowest and distances[i] < (lowest + 50):
+                pygame.draw.line(win, (255,255,255), (plan.x, plan.y), (planet_connections[i].x, planet_connections[i].y))
 
-    for plan in planets:
-        for line in plan.lines_to_draw:
-            pygame.draw.line(win, line[0], line[1], line[2], line[3])
+            
 
 
     pygame.display.update()
