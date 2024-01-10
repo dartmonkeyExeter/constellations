@@ -18,8 +18,15 @@ class Planet_class:
         self.colour = colour
 
 planets = []
-colour = (255,255,255)
-colours = [(255,0,0), (0,255,0), (0,0,255), (255,255,0), (0,255,255), (255,0,255), (255,255,255)]
+color = (255,255,255)
+colors = [(255,0,0), (0,255,0), (0,0,255), (255,255,0), (0,255,255), (255,0,255), (255,255,255)]
+
+def middle_color(color1, color2):
+    print(color1, color2)
+    middle1 = (color1[0] + color2[0]) / 2
+    middle2 = (color1[1] + color2[1]) / 2
+    middle3 = (color1[2] + color2[2]) / 2
+    return (middle1, middle2, middle3)
 
 while running:
     for event in pygame.event.get():
@@ -28,7 +35,7 @@ while running:
             pygame.quit()
         if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
             new_planet = Planet_class(pygame.mouse.get_pos()[0], pygame.mouse.get_pos()[1], random.randint(3, 5), 
-                                colour)
+                                color)
             planets.append(new_planet)
         if event.type == pygame.MOUSEBUTTONDOWN and event.button == 3:
             cur_mouse_pos = pygame.mouse.get_pos()
@@ -37,9 +44,9 @@ while running:
                     planets.remove(planet)
                     break
         if event.type == pygame.MOUSEWHEEL and event.y == 1:
-            colour = colours[(colours.index(colour) + 1) % len(colours)]
+            color = colors[(colors.index(color) + 1) % len(colors)]
         if event.type == pygame.MOUSEWHEEL and event.y == -1:
-            colour = colours[(colours.index(colour) - 1) % len(colours)]
+            color = colors[(colors.index(color) - 1) % len(colors)]
         if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
             planets = []
     win.fill((0,0,0))
@@ -58,13 +65,17 @@ while running:
                 planet_connections.append(plan2)
         lowest = min(distances, default=0)
         second_lowest = min([i for i in distances if i != lowest], default=0)
-        for i in range(len(distances)):
+        for i in range(len(distances)):  # Draw lines between planets
             if distances[i] == lowest:
-                pygame.draw.line(win, plan.colour, (plan.x, plan.y), (planet_connections[i].x, planet_connections[i].y))
+                pygame.draw.line(win,
+                                 middle_color(plan.color, planet_connections[i].color),
+                                 (plan.x, plan.y), (planet_connections[i].x, planet_connections[i].y))
             if distances[i] == second_lowest and distances[i] < (lowest + 50):
-                pygame.draw.line(win, plan.colour, (plan.x, plan.y), (planet_connections[i].x, planet_connections[i].y))
+                pygame.draw.line(win,
+                                 middle_color(plan.color, planet_connections[i].color),
+                                 (plan.x, plan.y), (planet_connections[i].x, planet_connections[i].y))
 
-    pygame.draw.rect(win, colour, (5, 5, 25, 25))
+    pygame.draw.rect(win, color, (5, 5, 25, 25))  # Color indicator
 
 
     pygame.display.update()
