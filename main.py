@@ -11,18 +11,17 @@ pygame.display.set_caption("constellation maker")
 running = True
 
 class Planet_class:
-    def __init__(self, x, y, radius, colour):
+    def __init__(self, x, y, radius, color):
         self.x = x
         self.y = y
         self.radius = radius
-        self.colour = colour
+        self.color = color
 
 planets = []
 color = (255,255,255)
 colors = [(255,0,0), (0,255,0), (0,0,255), (255,255,0), (0,255,255), (255,0,255), (255,255,255)]
 
 def middle_color(color1, color2):
-    print(color1, color2)
     middle1 = (color1[0] + color2[0]) / 2
     middle2 = (color1[1] + color2[1]) / 2
     middle3 = (color1[2] + color2[2]) / 2
@@ -51,7 +50,7 @@ while running:
             planets = []
     win.fill((0,0,0))
     for plan in planets:
-        pygame.draw.circle(win, plan.colour, (plan.x, plan.y), plan.radius)
+        pygame.draw.circle(win, plan.color, (plan.x, plan.y), plan.radius)
     
     for plan in planets:
         distances = []
@@ -79,3 +78,4 @@ while running:
 
 
     pygame.display.update()
+    
